@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Registrations</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .status-badge {
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+<div class="container py-4">
+
+    <h2 class="mb-4 text-center">My Event Registrations</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Event</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Registered At</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="reg, iStat : ${registrations}">
+                        <td th:text="${iStat.index + 1}"></td>
+
+                        <td th:text="${reg.event.title}"></td>
+
+                        <td>
+                            <span th:text="${#temporals.format(reg.event.startAt, 'dd MMM yyyy HH:mm')}"></span>
+                        </td>
+
+                        <td th:text="${reg.event.location}"></td>
+
+                        <td th:text="${#temporals.format(reg.registeredAt, 'dd MMM yyyy HH:mm')}"></td>
+
+                        <td class="text-center">
+                            <span th:if="${reg.confirmed}" class="badge bg-success status-badge">Confirmed</span>
+                            <span th:unless="${reg.confirmed}" class="badge bg-warning text-dark status-badge">Pending</span>
+                        </td>
+
+                        <td class="text-center">
+                            <a th:href="@{'/api/events/view/' + ${reg.event.id}}"
+                               class="btn btn-sm btn-primary">
+                                View
+                            </a>
+                        </td>
+                    </tr>
+
+                    <!-- If no registrations -->
+                    <tr th:if="${registrations.size() == 0}">
+                        <td colspan="7" class="text-center text-muted">
+                            No registrations found.
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+            <a href="javascript:history.back()" class="btn btn-primary">Go Back</a>
+        </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registrations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="fw-bold">Event Registrations</h2>
+            <a href="/api/registrations/add" class="btn btn-primary">+ Add Registration</a>
+        </div>
+        <div style="overflow-x: auto;">
+            <table class="table table-striped shadow-sm bg-white">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Event</th>
+                        <th>Date Registered</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="reg : ${registrations}">
+                        <td th:text="${reg.id}"></td>
+                        <td th:text="${reg.user.name}"></td>
+                        <td th:text="${reg.event.title}"></td>
+                        <td th:text="${#temporals.format(reg.registeredAt, 'dd-MM-yyyy HH:mm')}"></td>
+
+                        <td>
+                            <a th:href="@{/api/registrations/delete/{id}(id=${reg.id})}" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Are you sure you want to delete this registration?');">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center mt-4">
+            <a th:href="@{/dashboard}" class="btn btn-primary">Go Back</a>
+        </div>
+    </div>
+
+</body>
+
+</html>
